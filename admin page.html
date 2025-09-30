@@ -1,0 +1,2017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Willo Admin - Page Editor</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #22c55e;
+      --primary-dark: #16a34a;
+      --secondary: #f0fdf4;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #94a3b8;
+      --danger: #ef4444;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f1f5f9;
+      color: var(--dark);
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    header {
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .main-content {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 2rem;
+      padding: 2rem 0;
+    }
+    
+    @media (max-width: 1200px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .sidebar {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+    }
+    
+    .sidebar h3 {
+      margin-bottom: 1rem;
+      color: var(--dark);
+    }
+    
+    .page-list {
+      list-style: none;
+    }
+    
+    .page-list li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .page-list button {
+      width: 100%;
+      text-align: left;
+      padding: 0.75rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    
+    .page-list button:hover {
+      border-color: var(--primary);
+      background: var(--secondary);
+    }
+    
+    .page-list button.active {
+      border-color: var(--primary);
+      background: var(--secondary);
+      color: var(--primary-dark);
+    }
+    
+    .editor-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    
+    @media (max-width: 1200px) {
+      .editor-container {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .panel {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+    }
+    
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--secondary);
+    }
+    
+    .panel-header h3 {
+      color: var(--dark);
+    }
+    
+    #codeEditor {
+      width: 100%;
+      height: 600px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      padding: 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      resize: none;
+      background: #f8fafc;
+    }
+    
+    #codeEditor:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    #previewFrame {
+      width: 100%;
+      height: 600px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+    }
+    
+    .btn {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s;
+      font-size: 0.95rem;
+    }
+    
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+    
+    .btn-danger {
+      background: var(--danger);
+    }
+    
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+    
+    .actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .status {
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 500;
+    }
+    
+    .status-success {
+      background: #dcfce7;
+      color: #166534;
+    }
+    
+    .status-error {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+    
+    /* Authentication modal */
+    .auth-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    
+    .auth-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 400px;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+  <!-- Authentication Modal -->
+  <div class="auth-modal" id="authModal">
+    <div class="auth-card">
+      <h2 style="text-align: center; margin-bottom: 1.5rem;">Admin Authentication</h2>
+      <form id="authForm">
+        <div class="form-group">
+          <label for="adminPassword">Admin Password</label>
+          <input type="password" id="adminPassword" class="form-control" placeholder="Enter admin password" required>
+        </div>
+        <button type="submit" class="btn" style="width: 100%;">Login</button>
+      </form>
+      <div id="authError" style="margin-top: 1rem; padding: 0.75rem; border-radius: 8px; display: none;"></div>
+    </div>
+  </div>
+
+  <div class="container" id="adminContent" style="display: none;">
+    <header>
+      <nav class="navbar">
+        <a href="index.html" class="logo">Willo Admin</a>
+        <button id="logoutBtn" class="btn">Logout</button>
+      </nav>
+    </header>
+    
+    <div class="main-content">
+      <div class="sidebar">
+        <h3>Pages</h3>
+        <ul class="page-list" id="pageList">
+          <li><button data-page="index.html">Home Page</button></li>
+          <li><button data-page="org-signup.html">Organization Signup</button></li>
+          <li><button data-page="org-login.html">Organization Login</button></li>
+          <li><button data-page="org-dashboard.html">Organization Dashboard</button></li>
+          <li><button data-page="contributor-login.html">Contributor Login</button></li>
+          <li><button data-page="contributor-dashboard.html">Contributor Dashboard</button></li>
+          <li><button data-page="help.html">Help Page</button></li>
+          <li><button data-page="about.html">About Page</button></li>
+        </ul>
+      </div>
+      
+      <div class="editor-container">
+        <div class="panel">
+          <div class="panel-header">
+            <h3>Code Editor</h3>
+            <span id="currentPage" style="font-weight: normal; color: var(--gray);">index.html</span>
+          </div>
+          <textarea id="codeEditor" spellcheck="false"></textarea>
+          <div class="actions">
+            <button id="saveBtn" class="btn">
+              <i class="fas fa-save"></i> Save Changes
+            </button>
+            <button id="resetBtn" class="btn btn-danger">
+              <i class="fas fa-undo"></i> Reset
+            </button>
+          </div>
+          <div id="statusMessage" style="margin-top: 1rem; display: none;"></div>
+        </div>
+        
+        <div class="panel">
+          <div class="panel-header">
+            <h3>Live Preview</h3>
+            <span style="font-weight: normal; color: var(--gray);">Auto-updates as you type</span>
+          </div>
+          <iframe id="previewFrame" title="Page Preview"></iframe>
+        </div>
+      </div>
+    </div>
+    
+    <footer>
+      <p>&copy; 2024 Willo Ministry. Admin Page Editor.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Admin password (CHANGE THIS TO YOUR ACTUAL PASSWORD)
+    const ADMIN_PASSWORD = 'WilloAdmin2024!';
+    
+    // DOM Elements
+    const authModal = document.getElementById('authModal');
+    const authForm = document.getElementById('authForm');
+    const authError = document.getElementById('authError');
+    const adminContent = document.getElementById('adminContent');
+    const codeEditor = document.getElementById('codeEditor');
+    const previewFrame = document.getElementById('previewFrame');
+    const saveBtn = document.getElementById('saveBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const currentPageEl = document.getElementById('currentPage');
+    const statusMessage = document.getElementById('statusMessage');
+    const pageList = document.getElementById('pageList');
+    
+    // Current page and content
+    let currentPage = 'index.html';
+    let currentContent = '';
+    let isEditing = false;
+    
+    // Page content storage (in real implementation, this would be loaded from server)
+    const pageContents = {
+      'index.html': `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Willo - Organization Contribution Management</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #22c55e;
+      --primary-dark: #16a34a;
+      --secondary: #f0fdf4;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #94a3b8;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, var(--secondary) 0%, white 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      flex: 1;
+    }
+    
+    header {
+      padding: 1.5rem 0;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .hero {
+      text-align: center;
+      padding: 4rem 0;
+    }
+    
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--primary-dark);
+    }
+    
+    .hero p {
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      color: var(--gray);
+    }
+    
+    .btn {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+    
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    
+    .feature-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    
+    .feature-card i {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="index.html" class="logo">Willo</a>
+    </header>
+    
+    <section class="hero">
+      <h1>Organization Contribution Management</h1>
+      <p>Manage contributions for your ministry group with automated user distribution and real-time tracking</p>
+      <a href="org-signup.html" class="btn">Register Your Organization</a>
+    </section>
+    
+    <div class="features">
+      <div class="feature-card">
+        <i class="fas fa-users"></i>
+        <h3>Bulk User Management</h3>
+        <p>Automatically generate contributor IDs based on your group size</p>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-mobile-alt"></i>
+        <h3>Mobile Money Payments</h3>
+        <p>Receive contributions directly to your organization's number</p>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-chart-line"></i>
+        <h3>Real-time Tracking</h3>
+        <p>Monitor all contributions in your organization dashboard</p>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <p>&copy; 2024 Willo Ministry. All rights reserved.</p>
+  </footer>
+</body>
+</html>`,
+      'org-signup.html': `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organization Signup - Willo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #22c55e;
+      --primary-dark: #16a34a;
+      --secondary: #f0fdf4;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #94a3b8;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, var(--secondary) 0%, white 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    header {
+      padding: 1.5rem 0;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .main-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 500px;
+    }
+    
+    .card h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--dark);
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .btn {
+      display: block;
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+    
+    .range-info {
+      background: var(--secondary);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 1.5rem 0;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="index.html" class="logo">Willo</a>
+    </header>
+    
+    <div class="main-content">
+      <div class="card">
+        <h2>Organization Signup</h2>
+        <p style="text-align: center; margin-bottom: 1.5rem; color: var(--gray);">
+          Register your ministry group to manage contributions
+        </p>
+        
+        <form id="orgSignupForm">
+          <div class="form-group">
+            <label for="orgName">Organization Name</label>
+            <input type="text" id="orgName" class="form-control" placeholder="e.g., St. Mary's Choir" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="orgEmail">Organization Email</label>
+            <input type="email" id="orgEmail" class="form-control" placeholder="contact@organization.org" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="orgPhone">Organization Phone</label>
+            <input type="tel" id="orgPhone" class="form-control" placeholder="+234 XXX XXX XXX" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="contributionNumber">Contribution Phone Number</label>
+            <input type="tel" id="contributionNumber" class="form-control" placeholder="+234 XXX XXX XXX" required>
+            <div class="range-info">
+              <p><i class="fas fa-info-circle"></i> This number will receive all mobile money contributions</p>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="contributorCount">Number of Contributors</label>
+            <select id="contributorCount" class="form-control" required>
+              <option value="">Select range</option>
+              <option value="10">1-10 contributors</option>
+              <option value="50">11-50 contributors</option>
+              <option value="100">51-100 contributors</option>
+              <option value="500">101-500 contributors</option>
+              <option value="1000">501+ contributors</option>
+            </select>
+          </div>
+          
+          <button type="submit" class="btn">Register Organization</button>
+        </form>
+        
+        <div id="signupAlert" style="margin-top: 1rem; padding: 1rem; border-radius: 8px; display: none;"></div>
+      </div>
+    </div>
+    
+    <footer>
+      <p>&copy; 2024 Willo Ministry. Organization contribution management.</p>
+    </footer>
+  </div>
+</body>
+</html>`,
+      // Add other pages similarly...
+      'org-login.html': `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organization Login - Willo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #22c55e;
+      --primary-dark: #16a34a;
+      --secondary: #f0fdf4;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #94a3b8;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, var(--secondary) 0%, white 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    header {
+      padding: 1.5rem 0;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .main-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 450px;
+    }
+    
+    .card h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--dark);
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .btn {
+      display: block;
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+    
+    .links {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    
+    .links a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .links a:hover {
+      text-decoration: underline;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 1.5rem 0;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="index.html" class="logo">Willo</a>
+    </header>
+    
+    <div class="main-content">
+      <div class="card">
+        <h2>Organization Login</h2>
+        <form id="orgLoginForm">
+          <div class="form-group">
+            <label for="orgEmail">Organization Email</label>
+            <input type="email" id="orgEmail" class="form-control" placeholder="contact@organization.org" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" class="form-control" required>
+          </div>
+          <button type="submit" class="btn">Login</button>
+        </form>
+        <div class="links">
+          <p>Don't have an account? <a href="org-signup.html">Register your organization</a></p>
+          <p><a href="help.html">Need help?</a></p>
+        </div>
+        <div id="loginAlert" style="margin-top: 1rem; padding: 1rem; border-radius: 8px; display: none;"></div>
+      </div>
+    </div>
+    
+    <footer>
+      <p>&copy; 2024 Willo Ministry. All rights reserved.</p>
+    </footer>
+  </div>
+</body>
+</html>`,
+      'org-dashboard.html': `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organization Dashboard - Willo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #22c55e;
+      --primary-dark: #16a34a;
+      --secondary: #f0fdf4;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #94a3b8;
+      --danger: #ef4444;
+      --success: #10b981;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f1f5f9;
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      flex: 1;
+    }
+    
+    header {
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .main-content {
+      padding: 2rem 0;
+      flex: 1;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .card-header h2 {
+      color: var(--dark);
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+      background: var(--secondary);
+      padding: 1.5rem;
+      border-radius: 12px;
+      text-align: center;
+    }
+    
+    .stat-card .value {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--primary-dark);
+    }
+    
+    .contributors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .contributor-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    
+    .contributor-card h3 {
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+    }
+    
+    .contributor-id {
+      background: #f1f5f9;
+      padding: 0.5rem;
+      border-radius: 6px;
+      font-family: monospace;
+      margin: 0.5rem 0;
+    }
+    
+    .btn {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .btn-outline:hover {
+      background: var(--primary);
+      color: white;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <nav class="navbar">
+        <a href="index.html" class="logo">Willo</a>
+        <div>
+          <a href="help.html" style="text-decoration: none; color: var(--dark); margin-left: 1.5rem;">Help</a>
+        </div>
+      </nav>
+    </header>
+    
+    <div class="main-content">
+      <div class="card">
+        <div class="card-header">
+          <h2>Organization Dashboard</h2>
+          <button id="logoutBtn" class="btn">Logout</button>
+        </div>
+        
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="value">25</div>
+            <div>Total Contributors</div>
+          </div>
+          <div class="stat-card">
+            <div class="value">₦45,000</div>
+            <div>Total Contributions</div>
+          </div>
+          <div class="stat-card">
+            <div class="value">18</div>
+            <div>Active This Month</div>
+          </div>
+          <div class="stat-card">
+            <div class="value">+234 803 XXX XXX</div>
+            <div>Payment Number</div>
+          </div>
+        </div>
+        
+        <h3 style="margin: 2rem 0 1rem;">Contributor Credentials</h3>
+        <div class="contributors-grid">
+          <div class="contributor-card">
+            <h3>John Doe</h3>
+            <div class="contributor-id">WILLO-ORG123-00001</div>
+            <div style="font-size: 0.9rem; color: var(--gray); margin-bottom: 1rem;">
+              Password: Willo@2024
+            </div>
+            <button class="btn btn-outline" onclick="copyCredentials('WILLO-ORG123-00001', 'Willo@2024')">
+              Copy Credentials
+            </button>
+          </div>
+          <div class="contributor-card">
+            <h3>Jane Smith</h3>
+            <div class="contributor-id">WILLO-ORG123-00002</div>
+            <div style="font-size: 0.9rem; color: var(--gray); margin-bottom: 1rem;">
+              Password: Willo@2024
+            </div>
+            <button class="btn btn-outline" onclick="copyCredentials('WILLO-ORG123-00002', 'Willo@2024')">
+              Copy Credentials
+            </button>
+          </div>
+          <div class="contributor-card">
+            <h3>Michael Johnson</h3>
+            <div class="contributor-id">WILLO-ORG123-00003</div>
+            <div style="font-size: 0.9rem; color: var(--gray); margin-bottom: 1rem;">
+              Password: Willo@2024
+            </div>
+            <button class="btn btn-outline" onclick="copyCredentials('WILLO-ORG123-00003', 'Willo@2024')">
+              Copy Credentials
+            </button>
+          </div>
+        </div>
+        
+        <div style="margin-top: 2rem; text-align: center;">
+          <button class="btn" onclick="downloadCredentials()">
+            <i class="fas fa-download"></i> Download All Credentials
+          </button>
+          <button class="btn btn-outline" style="margin-left: 1rem;" onclick="emailCredentials()">
+            <i class="fas fa-envelope"></i> Email Credentials
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <footer>
+      <p>&copy; 2024 Willo Ministry. All rights reserved.</p>
+    </footer>
+  </div>
+</body>
+</html>`,
+      'contributor-login.html': `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contributor Login - Willo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #22c55e;
+      --primary-dark: #16a34a;
+      --secondary: #f0fdf4;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #94a3b8;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, var(--secondary) 0%, white 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    header {
+      padding: 1.5rem 0;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .main-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 450px;
+    }
+    
+    .card h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--dark);
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .btn {
+      display: block;
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+    
+    .links {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    
+    .links a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .links a:hover {
+      text-decoration: underline;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 1.5rem 0;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="index.html" class="logo">Willo</a>
+    </header>
+    
+    <div class="main-content">
+      <div class="card">
+        <h2>Contributor Login</h2>
+        <p style="text-align: center; margin-bottom: 1.5rem; color: var(--gray);">
+          Use credentials provided by your organization
+        </p>
+        <form id="contributorLoginForm">
+          <div class="form-group">
+            <label for="contributorId">Contributor ID</label>
+            <input type="text" id="contributorId" class="form-control" placeholder="WILLO-ORG-XXXXX" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" class="form-control" required>
+          </div>
+          <button type="submit" class="btn">Login</button>
+        </form>
+        <div class="links">
+          <p><a href="help.html">Need help?</a></p>
+        </div>
+        <div id="loginAlert" style="margin-top: 1rem; padding: 1rem; border-radius: 8px; display: none;"></div>
+      </div>
+    </div>
+    
+    <footer>
+      <p>&copy; 2024 Willo Ministry. All rights reserved.</p>
+    </footer>
+  </div>
+</body>
+</html>`,
+      'contributor-dashboard.html': `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contributor Dashboard - Willo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #22c55e;
+      --primary-dark: #16a34a;
+      --secondary: #f0fdf4;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #94a3b8;
+      --danger: #ef4444;
+      --success: #10b981;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f1f5f9;
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      flex: 1;
+    }
+    
+    header {
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .main-content {
+      padding: 2rem 0;
+      flex: 1;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .card-header h2 {
+      color: var(--dark);
+    }
+    
+    .organization-info {
+      background: var(--secondary);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+    
+    .payment-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .payment-card {
+      padding: 1.5rem;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 600;
+    }
+    
+    .paid {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+    
+    .defaulted {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+    
+    .btn {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+    
+    .btn-payment {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.8rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 1rem;
+    }
+    
+    .payment-instructions {
+      background: #f0fdf4;
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-top: 1.5rem;
+    }
+    
+    .payment-number {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary-dark);
+      margin: 0.5rem 0;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <nav class="navbar">
+        <a href="index.html" class="logo">Willo</a>
+        <div>
+          <a href="help.html" style="text-decoration: none; color: var(--dark); margin-left: 1.5rem;">Help</a>
+        </div>
+      </nav>
+    </header>
+    
+    <div class="main-content">
+      <div class="card">
+        <div class="card-header">
+          <h2>My Contributions</h2>
+          <button id="logoutBtn" class="btn">Logout</button>
+        </div>
+        
+        <div class="organization-info">
+          <h3>Your Organization</h3>
+          <p>St. Mary's Choir Ministry</p>
+          <p><strong>Contribution Number:</strong> <span id="contributionNumber" class="payment-number">+234 803 XXX XXX</span></p>
+        </div>
+        
+        <h3>Payment History</h3>
+        <div class="payment-grid">
+          <div class="payment-card paid">
+            <div style="font-size: 1.2rem; font-weight: bold; margin: 0.5rem 0;">
+              Jan 2024
+            </div>
+            <div>
+              <i class="fas fa-check-circle"></i> Paid
+            </div>
+            <div style="font-size: 0.95rem; margin-top: 0.3rem; font-weight: 500;">₦1,500</div>
+          </div>
+          <div class="payment-card paid">
+            <div style="font-size: 1.2rem; font-weight: bold; margin: 0.5rem 0;">
+              Feb 2024
+            </div>
+            <div>
+              <i class="fas fa-check-circle"></i> Paid
+            </div>
+            <div style="font-size: 0.95rem; margin-top: 0.3rem; font-weight: 500;">₦1,500</div>
+          </div>
+          <div class="payment-card defaulted">
+            <div style="font-size: 1.2rem; font-weight: bold; margin: 0.5rem 0;">
+              Mar 2024
+            </div>
+            <div>
+              <i class="fas fa-exclamation-circle"></i> Missed
+            </div>
+          </div>
+          <div class="payment-card paid">
+            <div style="font-size: 1.2rem; font-weight: bold; margin: 0.5rem 0;">
+              Apr 2024
+            </div>
+            <div>
+              <i class="fas fa-check-circle"></i> Paid
+            </div>
+            <div style="font-size: 0.95rem; margin-top: 0.3rem; font-weight: 500;">₦1,500</div>
+          </div>
+        </div>
+        
+        <div class="payment-instructions">
+          <h3>How to Make Payments</h3>
+          <p>Send your contributions via Mobile Money to the number above.</p>
+          <p><strong>Important:</strong> Use your Contributor ID as the reference when making payments.</p>
+          <button class="btn-payment" onclick="copyContributionNumber()">
+            <i class="fas fa-copy"></i> Copy Payment Number
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <footer>
+      <p>&copy; 2024 Willo Ministry. All rights reserved.</p>
+    </footer>
+  </div>
+</body>
+</html>`,
+      'help.html': `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Help - Willo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #22c55e;
+      --primary-dark: #16a34a;
+      --secondary: #f0fdf4;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #94a3b8;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, var(--secondary) 0%, white 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    header {
+      padding: 1.5rem 0;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .main-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 500px;
+    }
+    
+    .card h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: var(--dark);
+    }
+    
+    .card p {
+      text-align: center;
+      color: var(--gray);
+      margin-bottom: 2rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    textarea.form-control {
+      min-height: 120px;
+      resize: vertical;
+    }
+    
+    .btn {
+      display: block;
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+    
+    .links {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    
+    .links a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .links a:hover {
+      text-decoration: underline;
+    }
+    
+    .alert {
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      display: none;
+    }
+    
+    .alert-success {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+    
+    .alert-error {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 1.5rem 0;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="index.html" class="logo">Willo</a>
+    </header>
+    
+    <div class="main-content">
+      <div class="card">
+        <h2>Need Help?</h2>
+        <p>Send us a message and we'll get back to you soon</p>
+        <form id="helpForm">
+          <div class="form-group">
+            <label for="helpName">Your Name</label>
+            <input type="text" id="helpName" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="helpEmail">Your Email</label>
+            <input type="email" id="helpEmail" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="helpMessage">Message</label>
+            <textarea id="helpMessage" class="form-control" required></textarea>
+          </div>
+          <button type="submit" class="btn">Send Message</button>
+          <div id="helpAlert" class="alert"></div>
+        </form>
+        <div class="links">
+          <p><a href="index.html">← Back to Home</a></p>
+        </div>
+      </div>
+    </div>
+    
+    <footer>
+      <p>&copy; 2024 Willo Ministry. All rights reserved.</p>
+      <p>Messages go directly to <strong>princeoscar008@gmail.com</strong></p>
+    </footer>
+  </div>
+</body>
+</html>`,
+      'about.html': `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - Willo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #22c55e;
+      --primary-dark: #16a34a;
+      --secondary: #f0fdf4;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #94a3b8;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f1f5f9;
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      flex: 1;
+    }
+    
+    header {
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .main-content {
+      padding: 2rem 0;
+      flex: 1;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .card h2 {
+      color: var(--primary-dark);
+      margin-bottom: 1.5rem;
+    }
+    
+    .mission-statement {
+      background: var(--secondary);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin: 1.5rem 0;
+      border-left: 4px solid var(--primary);
+    }
+    
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <nav class="navbar">
+        <a href="index.html" class="logo">Willo</a>
+        <div>
+          <a href="help.html" style="text-decoration: none; color: var(--dark); margin-left: 1.5rem;">Help</a>
+        </div>
+      </nav>
+    </header>
+    
+    <div class="main-content">
+      <div class="card">
+        <h2>About Willo</h2>
+        
+        <div class="mission-statement">
+          <h3>Our Mission</h3>
+          <p>Willo empowers church communities to track and manage contributions across all ministry groups with transparency and ease.</p>
+        </div>
+        
+        <h3>What We Do</h3>
+        <p>Willo is a contribution tracking system designed specifically for church ministries. We help you:</p>
+        <ul style="margin: 1rem 0 1.5rem 1.5rem; line-height: 1.6;">
+          <li>Track contributions for multiple ministry groups (Choir, Building Fund, Missions, etc.)</li>
+          <li>Monitor payment history and identify defaulted months</li>
+          <li>Generate annual summaries for contributors</li>
+          <li>Provide multiple payment options (Bank, Mobile Money, Cash)</li>
+          <li>Send automated notifications and reminders</li>
+        </ul>
+        
+        <h3>Our Story</h3>
+        <p>Willo was created by church leaders who understood the challenges of managing contributions across multiple ministry groups. What started as a simple spreadsheet evolved into this comprehensive system to serve churches of all sizes.</p>
+        
+        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #e2e8f0;">
+          <h3>Get Involved</h3>
+          <p>Want to bring Willo to your church? <a href="contact.html" style="color: var(--primary); text-decoration: none;">Contact us today!</a></p>
+        </div>
+      </div>
+    </div>
+    
+    <footer>
+      <p>&copy; 2024 Willo Ministry. All rights reserved.</p>
+    </footer>
+  </div>
+</body>
+</html>`
+    };
+    
+    // Authentication
+    authForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const password = document.getElementById('adminPassword').value;
+      
+      if (password === ADMIN_PASSWORD) {
+        authModal.style.display = 'none';
+        adminContent.style.display = 'block';
+        loadPage('index.html');
+      } else {
+        authError.textContent = 'Invalid password. Please try again.';
+        authError.style.display = 'block';
+        authError.className = 'status-error';
+      }
+    });
+    
+    // Page selection
+    pageList.addEventListener('click', (e) => {
+      if (e.target.tagName === 'BUTTON') {
+        const page = e.target.dataset.page;
+        loadPage(page);
+        
+        // Update active state
+        document.querySelectorAll('.page-list button').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        e.target.classList.add('active');
+      }
+    });
+    
+    // Load page content
+    function loadPage(page) {
+      currentPage = page;
+      currentContent = pageContents[page] || '';
+      codeEditor.value = currentContent;
+      currentPageEl.textContent = page;
+      updatePreview();
+    }
+    
+    // Update preview
+    function updatePreview() {
+      try {
+        previewFrame.srcdoc = codeEditor.value;
+        statusMessage.textContent = 'Preview updated successfully';
+        statusMessage.className = 'status status-success';
+        statusMessage.style.display = 'block';
+      } catch (e) {
+        statusMessage.textContent = 'Error updating preview: ' + e.message;
+        statusMessage.className = 'status status-error';
+        statusMessage.style.display = 'block';
+      }
+    }
+    
+    // Auto-update preview as user types
+    let previewTimeout;
+    codeEditor.addEventListener('input', () => {
+      clearTimeout(previewTimeout);
+      previewTimeout = setTimeout(updatePreview, 500);
+    });
+    
+    // Save changes
+    saveBtn.addEventListener('click', () => {
+      // In a real implementation, this would send to your backend
+      pageContents[currentPage] = codeEditor.value;
+      currentContent = codeEditor.value;
+      
+      statusMessage.textContent = `Changes saved to ${currentPage}!`;
+      statusMessage.className = 'status status-success';
+      statusMessage.style.display = 'block';
+      
+      // Hide status after 3 seconds
+      setTimeout(() => {
+        statusMessage.style.display = 'none';
+      }, 3000);
+    });
+    
+    // Reset changes
+    resetBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to reset all changes to this page?')) {
+        codeEditor.value = currentContent;
+        updatePreview();
+        statusMessage.textContent = 'Changes reset successfully';
+        statusMessage.className = 'status status-success';
+        statusMessage.style.display = 'block';
+      }
+    });
+    
+    // Logout
+    logoutBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to logout?')) {
+        adminContent.style.display = 'none';
+        authModal.style.display = 'flex';
+        document.getElementById('adminPassword').value = '';
+        authError.style.display = 'none';
+      }
+    });
+    
+    // Initialize first page
+    document.querySelectorAll('.page-list button')[0].classList.add('active');
+  </script>
+</body>
+</html>

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Willo - Organization Contribution Management</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #22c55e;
+      --primary-dark: #16a34a;
+      --secondary: #f0fdf4;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #94a3b8;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, var(--secondary) 0%, white 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      flex: 1;
+    }
+    
+    header {
+      padding: 1.5rem 0;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+    
+    .hero {
+      text-align: center;
+      padding: 4rem 0;
+    }
+    
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--primary-dark);
+    }
+    
+    .hero p {
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      color: var(--gray);
+    }
+    
+    .btn {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+    
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    
+    .feature-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    
+    .feature-card i {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    
+    .pricing {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+      padding: 2.5rem;
+      margin: 3rem 0;
+      text-align: center;
+    }
+    
+    .pricing h2 {
+      color: var(--primary-dark);
+      margin-bottom: 2rem;
+    }
+    
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .plan {
+      padding: 2rem;
+      border-radius: 12px;
+      border: 2px solid #e2e8f0;
+    }
+    
+    .plan.popular {
+      border-color: var(--primary);
+      background: var(--secondary);
+      position: relative;
+    }
+    
+    .plan.popular::before {
+      content: "MOST POPULAR";
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: white;
+      padding: 0.25rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    
+    .plan h3 {
+      color: var(--dark);
+      margin-bottom: 1rem;
+    }
+    
+    .plan .price {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--primary-dark);
+      margin-bottom: 1.5rem;
+    }
+    
+    .plan ul {
+      list-style: none;
+      margin-bottom: 1.5rem;
+    }
+    
+    .plan ul li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <nav class="navbar">
+        <a href="index.html" class="logo">Willo</a>
+        <div class="nav-links">
+          <a href="help.html">Help</a>
+          <a href="about.html">About</a>
+        </div>
+      </nav>
+    </header>
+    
+    <section class="hero">
+      <h1>Organization Contribution Management</h1>
+      <p>Manage contributions for your ministry group with automated user distribution, real-time tracking, and secure payments</p>
+      <a href="org-signup.html" class="btn">Register Your Organization</a>
+    </section>
+    
+    <div class="features">
+      <div class="feature-card">
+        <i class="fas fa-users"></i>
+        <h3>Bulk User Management</h3>
+        <p>Automatically generate contributor IDs based on your group size</p>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-credit-card"></i>
+        <h3>Secure Payments</h3>
+        <p>Accept card payments with Stripe integration - safe and reliable</p>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-chart-line"></i>
+        <h3>Real-time Tracking</h3>
+        <p>Monitor all contributions in your organization dashboard</p>
+      </div>
+    </div>
+    
+    <div class="pricing">
+      <h2>Simple, Transparent Pricing</h2>
+      <p>Free to start. Pay only when you need advanced features.</p>
+      
+      <div class="plans">
+        <div class="plan">
+          <h3>Starter</h3>
+          <div class="price">Free</div>
+          <ul>
+            <li>Up to 10 contributors</li>
+            <li>Basic contribution tracking</li>
+            <li>Email support</li>
+            <li>Manual payment recording</li>
+          </ul>
+          <a href="org-signup.html" class="btn">Get Started</a>
+        </div>
+        
+        <div class="plan popular">
+          <h3>Growth</h3>
+          <div class="price">₦2,500/month</div>
+          <ul>
+            <li>Up to 100 contributors</li>
+            <li>Stripe payment integration</li>
+            <li>SMS payment reminders</li>
+            <li>Advanced analytics</li>
+            <li>Priority support</li>
+          </ul>
+          <a href="org-signup.html" class="btn">Start Free Trial</a>
+        </div>
+        
+        <div class="plan">
+          <h3>Enterprise</h3>
+          <div class="price">₦7,500/month</div>
+          <ul>
+            <li>Unlimited contributors</li>
+            <li>Custom payment methods</li>
+            <li>API access</li>
+            <li>Custom branding</li>
+            <li>Dedicated account manager</li>
+          </ul>
+          <a href="help.html" class="btn">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <p>&copy; 2024 Willo Ministry. All rights reserved.</p>
+  </footer>
+
+  <!-- Willo Help Bot -->
+  <div id="willoBot" style="position: fixed; bottom: 20px; right: 20px; z-index: 10000;">
+    <button id="botToggle" style="background: #22c55e; color: white; width: 60px; height: 60px; border-radius: 50%; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.15); cursor: pointer; font-size: 24px; display: flex; align-items: center; justify-content: center; transition: transform 0.2s;">
+      <i class="fas fa-robot"></i>
+    </button>
+    
+    <div id="botChat" style="display: none; position: absolute; bottom: 80px; right: 0; width: 350px; background: white; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; flex-direction: column; height: 400px;">
+      <div style="background: #22c55e; color: white; padding: 15px; display: flex; align-items: center; justify-content: space-between;">
+        <div>
+          <strong>Willo Helper</strong>
+          <div style="font-size: 0.8rem; opacity: 0.9;">Ask me anything!</div>
+        </div>
+        <button id="closeBot" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div id="chatMessages" style="flex: 1; padding: 15px; overflow-y: auto; background: #f8fafc;">
+        <div class="bot-message" style="display: flex; margin-bottom: 15px;">
+          <div style="width: 32px; height: 32px; background: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin-right: 10px; flex-shrink: 0;">
+            <i class="fas fa-robot" style="font-size: 14px;"></i>
+          </div>
+          <div style="background: white; padding: 12px; border-radius: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            Hello! I'm Willo's helper bot. How can I assist you today?
+          </div>
+        </div>
+      </div>
+      
+      <div style="padding: 15px; border-top: 1px solid #e2e8f0; display: flex; gap: 10px;">
+        <input type="text" id="userInput" placeholder="Type your question..." style="flex: 1; padding: 10px 15px; border: 2px solid #e2e8f0; border-radius: 24px; outline: none;" />
+        <button id="sendBtn" style="background: #22c55e; color: white; width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .bot-message { display: flex; margin-bottom: 15px; }
+    .user-message { justify-content: flex-end; }
+    .user-message .message-bubble { background: #dcfce7; border-radius: 18px 0 18px 18px; }
+    .bot-message .message-bubble { background: white; border-radius: 0 18px 18px 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .typing-indicator { display: flex; padding: 12px; background: white; border-radius: 18px 0 18px 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-left: 42px; }
+    .typing-dot { width: 8px; height: 8px; background: #94a3b8; border-radius: 50%; margin: 0 3px; animation: typing 1.4s infinite; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typing { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
+  </style>
+
+  <script>
+    // Bot script (same as before)
+    document.addEventListener('DOMContentLoaded', () => {
+      const botToggle = document.getElementById('botToggle');
+      const botChat = document.getElementById('botChat');
+      const closeBot = document.getElementById('closeBot');
+      const userInput = document.getElementById('userInput');
+      const sendBtn = document.getElementById('sendBtn');
+      const chatMessages = document.getElementById('chatMessages');
+      
+      botToggle.addEventListener('click', () => {
+        botChat.style.display = botChat.style.display === 'none' ? 'flex' : 'none';
+      });
+      
+      closeBot.addEventListener('click', () => {
+        botChat.style.display = 'none';
+      });
+      
+      sendBtn.addEventListener('click', sendMessage);
+      userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+      });
+      
+      function sendMessage() {
+        const message = userInput.value.trim();
+        if (!message) return;
+        
+        addMessage(message, 'user');
+        userInput.value = '';
+        showTypingIndicator();
+        
+        setTimeout(() => {
+          const response = getBotResponse(message);
+          hideTypingIndicator();
+          addMessage(response, 'bot');
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 1000);
+      }
+      
+      function addMessage(text, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `${sender}-message bot-message`;
+        
+        const bubble = document.createElement('div');
+        bubble.className = 'message-bubble';
+        bubble.textContent = text;
+        
+        if (sender === 'bot') {
+          messageDiv.innerHTML = `<div style="width: 32px; height: 32px; background: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin-right: 10px; flex-shrink: 0;"><i class="fas fa-robot" style="font-size: 14px;"></i></div>`;
+          messageDiv.appendChild(bubble);
+        } else {
+          messageDiv.appendChild(bubble);
+          messageDiv.innerHTML += `<div style="width: 32px; height: 32px; background: #94a3b8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin-left: 10px; flex-shrink: 0;"><i class="fas fa-user" style="font-size: 14px;"></i></div>`;
+        }
+        
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+      
+      function showTypingIndicator() {
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'typing-indicator';
+        typingDiv.id = 'typingIndicator';
+        typingDiv.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+        chatMessages.appendChild(typingDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+      
+      function hideTypingIndicator() {
+        const typingIndicator = document.getElementById('typingIndicator');
+        if (typingIndicator) typingIndicator.remove();
+      }
+      
+      function getBotResponse(message) {
+        const msg = message.toLowerCase();
+        if (msg.includes('payment') || msg.includes('stripe') || msg.includes('card') || msg.includes('fee')) {
+          return "Willo uses Stripe for secure card payments. We charge a 3% platform fee on all processed payments to maintain our service. You can also accept Mobile Money payments manually.";
+        }
+        if (msg.includes('pricing') || msg.includes('cost') || msg.includes('money') || msg.includes('revenue')) {
+          return "Willo offers free and paid plans:\n\n• Starter: Free (10 contributors)\n• Growth: ₦2,500/month (100 contributors + Stripe)\n• Enterprise: ₦7,500/month (Unlimited)\n\nWe also earn 3% on processed payments.";
+        }
+        if (msg.includes('organization') || msg.includes('org') || msg.includes('signup')) {
+          return "Organizations can sign up at willo.org/org-signup.html. Choose your plan, provide organization details, and start managing contributions immediately.";
+        }
+        if (msg.includes('contributor') || msg.includes('member') || msg.includes('user')) {
+          return "As a contributor, you'll receive a unique ID and password from your organization. Use these to log in and make secure payments via card or Mobile Money.";
+        }
+        if (msg.includes('dashboard') || msg.includes('track') || msg.includes('history')) {
+          return "Your dashboard shows all contribution history, payment status, and organization details. Processed payments appear instantly with transaction IDs.";
+        }
+        if (msg.includes('help') || msg.includes('support') || msg.includes('contact')) {
+          return "For additional help, visit our Help page or contact support at princeoscar008@gmail.com. Your organization administrator can also assist you.";
+        }
+        if (msg.includes('login') || msg.includes('signin')) {
+          return "Contributors: Use your organization-provided ID and password at willo.org/contributor-login.html\n\nOrganizations: Log in at willo.org/org-login.html with your organization credentials.";
+        }
+        if (msg.includes('register') || msg.includes('signup')) {
+          return "Only organizations can register on Willo. Individual contributors receive credentials from their organization. Organizations should visit willo.org/org-signup.html to get started.";
+        }
+        if (msg.includes('thank') || msg.includes('great') || msg.includes('good')) {
+          return "You're welcome! I'm here to help anytime. God bless your contributions!";
+        }
+        if (msg.includes('hello') || msg.includes('hi') || msg.includes('hey')) {
+          return "Hello! How can I help you with Willo today?";
+        }
+        if (msg.includes('who are you') || msg.includes('what are you')) {
+          return "I'm Willo's AI helper bot! I can answer questions about organization signup, contributor login, payments, and dashboard features.";
+        }
+        return "I understand you're asking about '" + message + "'. For the best assistance, please ask about:\n\n• Organization signup\n• Contributor login\n• Making payments\n• Dashboard features\n• Pricing plans\n\nOr contact princeoscar008@gmail.com for direct support!";
+      }
+      
+      document.addEventListener('click', (e) => {
+        if (!botToggle.contains(e.target) && !botChat.contains(e.target)) {
+          botChat.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!-- Add this to your existing contributor-dashboard.html -->
+<div class="organization-info">
+  <h3>Your Organization</h3>
+  <p id="orgName">St. Mary's Choir Ministry</p>
+  <p><strong>Currency:</strong> <span id="currencyDisplay">₵ (GHS)</span></p>
+  <p><strong>Contribution Number:</strong> <span id="contributionNumber" class="payment-number">+233 XXX XXX XXX</span></p>
+</div>
+
+<!-- Update payment amount input -->
+<div class="form-group">
+  <label>Amount (<span id="currencySymbol">₵</span>)</label>
+  <input type="number" id="paymentAmount" class="form-control" value="100" min="10" required>
+</div>
+
+<script>
+// Update currency display on page load
+document.addEventListener('DOMContentLoaded', () => {
+  const token = localStorage.getItem('willo_contributor_token');
+  if (token) {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      document.getElementById('orgName').textContent = payload.orgName || 'Your Organization';
+      document.getElementById('contributionNumber').textContent = payload.orgContributionNumber || '+233 XXX XXX XXX';
+      
+      // Set currency based on organization
+      const currency = payload.orgCurrency || 'GHS';
+      const currencySymbol = payload.orgCurrencySymbol || '₵';
+      
+      document.getElementById('currencyDisplay').textContent = `${currencySymbol} (${currency})`;
+      document.getElementById('currencySymbol').textContent = currencySymbol;
+      
+      // Update minimum amount based on currency
+      const minAmounts = {
+        'GHS': 10,
+        'NGN': 500,
+        'KES': 100,
+        'UGX': 5000,
+        'ZAR': 20,
+        'XOF': 1000,
+        'XAF': 1000,
+        'USD': 1
+      };
+      
+      const minAmount = minAmounts[currency] || 10;
+      document.getElementById('paymentAmount').min = minAmount;
+      document.getElementById('paymentAmount').value = minAmount;
+      
+    } catch (e) {
+      console.error('Invalid token');
+    }
+  }
+  
+  // ... rest of your existing code
+});
+</script>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organization Dashboard - Willo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #22c55e;
+      --primary-dark: #16a34a;
+      --secondary: #f0fdf4;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #94a3b8;
+      --danger: #ef4444;
+      --success: #10b981;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f1f5f9;
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      flex: 1;
+    }
+    
+    header {
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .main-content {
+      padding: 2rem 0;
+      flex: 1;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .card-header h2 {
+      color: var(--dark);
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+      background: var(--secondary);
+      padding: 1.5rem;
+      border-radius: 12px;
+      text-align: center;
+    }
+    
+    .stat-card .value {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--primary-dark);
+    }
+    
+    .contributors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .contributor-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    
+    .contributor-card h3 {
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+    }
+    
+    .contributor-id {
+      background: #f1f5f9;
+      padding: 0.5rem;
+      border-radius: 6px;
+      font-family: monospace;
+      margin: 0.5rem 0;
+    }
+    
+    .btn {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .btn-outline:hover {
+      background: var(--primary);
+      color: white;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <nav class="navbar">
+        <a href="index.html" class="logo">Willo</a>
+        <div>
+          <a href="help.html" style="text-decoration: none; color: var(--dark); margin-left: 1.5rem;">Help</a>
+        </div>
+      </nav>
+    </header>
+    
+    <div class="main-content">
+      <div class="card">
+        <div class="card-header">
+          <h2>Organization Dashboard</h2>
+          <button id="logoutBtn" class="btn">Logout</button>
+        </div>
+        
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="value">25</div>
+            <div>Total Contributors</div>
+          </div>
+          <div class="stat-card">
+            <div class="value">₦45,000</div>
+            <div>Total Contributions</div>
+          </div>
+          <div class="stat-card">
+            <div class="value">18</div>
+            <div>Active This Month</div>
+          </div>
+          <div class="stat-card">
+            <div class="value">+234 803 XXX XXX</div>
+            <div>Payment Number</div>
+          </div>
+        </div>
+        
+        <h3 style="margin: 2rem 0 1rem;">Contributor Credentials</h3>
+        <div class="contributors-grid">
+          <div class="contributor-card">
+            <h3>John Doe</h3>
+            <div class="contributor-id">WILLO-ORG123-00001</div>
+            <div style="font-size: 0.9rem; color: var(--gray); margin-bottom: 1rem;">
+              Password: Willo@2024
+            </div>
+            <button class="btn btn-outline" onclick="copyCredentials('WILLO-ORG123-00001', 'Willo@2024')">
+              Copy Credentials
+            </button>
+          </div>
+          <div class="contributor-card">
+            <h3>Jane Smith</h3>
+            <div class="contributor-id">WILLO-ORG123-00002</div>
+            <div style="font-size: 0.9rem; color: var(--gray); margin-bottom: 1rem;">
+              Password: Willo@2024
+            </div>
+            <button class="btn btn-outline" onclick="copyCredentials('WILLO-ORG123-00002', 'Willo@2024')">
+              Copy Credentials
+            </button>
+          </div>
+          <div class="contributor-card">
+            <h3>Michael Johnson</h3>
+            <div class="contributor-id">WILLO-ORG123-00003</div>
+            <div style="font-size: 0.9rem; color: var(--gray); margin-bottom: 1rem;">
+              Password: Willo@2024
+            </div>
+            <button class="btn btn-outline" onclick="copyCredentials('WILLO-ORG123-00003', 'Willo@2024')">
+              Copy Credentials
+            </button>
+          </div>
+        </div>
+        
+        <div style="margin-top: 2rem; text-align: center;">
+          <button class="btn" onclick="downloadCredentials()">
+            <i class="fas fa-download"></i> Download All Credentials
+          </button>
+          <button class="btn btn-outline" style="margin-left: 1rem;" onclick="emailCredentials()">
+            <i class="fas fa-envelope"></i> Email Credentials
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <footer>
+      <p>&copy; 2024 Willo Ministry. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <!-- Willo Help Bot (same as previous files) -->
+  <div id="willoBot" style="position: fixed; bottom: 20px; right: 20px; z-index: 10000;">
+    <button id="botToggle" style="background: #22c55e; color: white; width: 60px; height: 60px; border-radius: 50%; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.15); cursor: pointer; font-size: 24px; display: flex; align-items: center; justify-content: center; transition: transform 0.2s;">
+      <i class="fas fa-robot"></i>
+    </button>
+    
+    <div id="botChat" style="display: none; position: absolute; bottom: 80px; right: 0; width: 350px; background: white; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; flex-direction: column; height: 400px;">
+      <div style="background: #22c55e; color: white; padding: 15px; display: flex; align-items: center; justify-content: space-between;">
+        <div>
+          <strong>Willo Helper</strong>
+          <div style="font-size: 0.8rem; opacity: 0.9;">Ask me anything!</div>
+        </div>
+        <button id="closeBot" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div id="chatMessages" style="flex: 1; padding: 15px; overflow-y: auto; background: #f8fafc;">
+        <div class="bot-message" style="display: flex; margin-bottom: 15px;">
+          <div style="width: 32px; height: 32px; background: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin-right: 10px; flex-shrink: 0;">
+            <i class="fas fa-robot" style="font-size: 14px;"></i>
+          </div>
+          <div style="background: white; padding: 12px; border-radius: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            Hello! I'm Willo's helper bot. How can I assist you today?
+          </div>
+        </div>
+      </div>
+      
+      <div style="padding: 15px; border-top: 1px solid #e2e8f0; display: flex; gap: 10px;">
+        <input type="text" id="userInput" placeholder="Type your question..." style="flex: 1; padding: 10px 15px; border: 2px solid #e2e8f0; border-radius: 24px; outline: none;" />
+        <button id="sendBtn" style="background: #22c55e; color: white; width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .bot-message { display: flex; margin-bottom: 15px; }
+    .user-message { justify-content: flex-end; }
+    .user-message .message-bubble { background: #dcfce7; border-radius: 18px 0 18px 18px; }
+    .bot-message .message-bubble { background: white; border-radius: 0 18px 18px 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .typing-indicator { display: flex; padding: 12px; background: white; border-radius: 18px 0 18px 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-left: 42px; }
+    .typing-dot { width: 8px; height: 8px; background: #94a3b8; border-radius: 50%; margin: 0 3px; animation: typing 1.4s infinite; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typing { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
+  </style>
+
+  <script>
+    function copyCredentials(id, password) {
+      const text = `Contributor ID: ${id}\nPassword: ${password}\nLogin: ${window.location.origin}/contributor-login.html`;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Credentials copied to clipboard!');
+      });
+    }
+    
+    function downloadCredentials() {
+      alert('Credentials file downloaded!');
+    }
+    
+    function emailCredentials() {
+      alert('Credentials sent to organization email!');
+    }
+    
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('willo_org_token');
+      window.location.href = 'index.html';
+    });
+
+    // Bot script (same as previous files)
+    document.addEventListener('DOMContentLoaded', () => {
+      const botToggle = document.getElementById('botToggle');
+      const botChat = document.getElementById('botChat');
+      const closeBot = document.getElementById('closeBot');
+      const userInput = document.getElementById('userInput');
+      const sendBtn = document.getElementById('sendBtn');
+      const chatMessages = document.getElementById('chatMessages');
+      
+      botToggle.addEventListener('click', () => {
+        botChat.style.display = botChat.style.display === 'none' ? 'flex' : 'none';
+      });
+      
+      closeBot.addEventListener('click', () => {
+        botChat.style.display = 'none';
+      });
+      
+      sendBtn.addEventListener('click', sendMessage);
+      userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+      });
+      
+      function sendMessage() {
+        const message = userInput.value.trim();
+        if (!message) return;
+        
+        addMessage(message, 'user');
+        userInput.value = '';
+        showTypingIndicator();
+        
+        setTimeout(() => {
+          const response = getBotResponse(message);
+          hideTypingIndicator();
+          addMessage(response, 'bot');
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 1000);
+      }
+      
+      function addMessage(text, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `${sender}-message bot-message`;
+        
+        const bubble = document.createElement('div');
+        bubble.className = 'message-bubble';
+        bubble.textContent = text;
+        
+        if (sender === 'bot') {
+          messageDiv.innerHTML = `<div style="width: 32px; height: 32px; background: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin-right: 10px; flex-shrink: 0;"><i class="fas fa-robot" style="font-size: 14px;"></i></div>`;
+          messageDiv.appendChild(bubble);
+        } else {
+          messageDiv.appendChild(bubble);
+          messageDiv.innerHTML += `<div style="width: 32px; height: 32px; background: #94a3b8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin-left: 10px; flex-shrink: 0;"><i class="fas fa-user" style="font-size: 14px;"></i></div>`;
+        }
+        
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+      
+      function showTypingIndicator() {
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'typing-indicator';
+        typingDiv.id = 'typingIndicator';
+        typingDiv.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+        chatMessages.appendChild(typingDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+      
+      function hideTypingIndicator() {
+        const typingIndicator = document.getElementById('typingIndicator');
+        if (typingIndicator) typingIndicator.remove();
+      }
+      
+      function getBotResponse(message) {
+        const msg = message.toLowerCase();
+        if (msg.includes('organization') || msg.includes('org') || msg.includes('signup')) {
+          return "Organizations can sign up at willo.org/org-signup.html. You'll need to provide your organization details, contribution phone number, and number of contributors. After signup, you'll receive bulk credentials to distribute to your members.";
+        }
+        if (msg.includes('contributor') || msg.includes('member') || msg.includes('user')) {
+          return "As a contributor, you'll receive a unique ID and password from your organization. Use these to log in at willo.org/contributor-login.html and track your contributions.";
+        }
+        if (msg.includes('payment') || msg.includes('contribution') || msg.includes('pay') || msg.includes('mobile money')) {
+          return "To make payments, send money via Mobile Money to your organization's contribution number. Always use your Contributor ID as the reference. Your payments will automatically appear in your dashboard.";
+        }
+        if (msg.includes('dashboard') || msg.includes('track') || msg.includes('history')) {
+          return "Your dashboard shows all your contribution history, payment status (paid/missed), and your organization's contact details. Log in to see your personalized dashboard.";
+        }
+        if (msg.includes('password') || msg.includes('reset') || msg.includes('forgot')) {
+          return "If you forgot your password, contact your organization administrator. They can reset your credentials from their organization dashboard.";
+        }
+        if (msg.includes('help') || msg.includes('support') || msg.includes('contact')) {
+          return "For additional help, visit our Help page or contact support at princeoscar008@gmail.com. Your organization administrator can also assist you.";
+        }
+        if (msg.includes('login') || msg.includes('signin')) {
+          return "Contributors: Use your organization-provided ID and password at willo.org/contributor-login.html\n\nOrganizations: Log in at willo.org/org-login.html with your organization credentials.";
+        }
+        if (msg.includes('register') || msg.includes('signup')) {
+          return "Only organizations can register on Willo. Individual contributors receive credentials from their organization. Organizations should visit willo.org/org-signup.html to get started.";
+        }
+        if (msg.includes('thank') || msg.includes('great') || msg.includes('good')) {
+          return "You're welcome! I'm here to help anytime. God bless your contributions!";
+        }
+        if (msg.includes('hello') || msg.includes('hi') || msg.includes('hey')) {
+          return "Hello! How can I help you with Willo today?";
+        }
+        if (msg.includes('who are you') || msg.includes('what are you')) {
+          return "I'm Willo's AI helper bot! I can answer questions about organization signup, contributor login, payments, and dashboard features.";
+        }
+        return "I understand you're asking about '" + message + "'. For the best assistance, please ask about:\n\n• Organization signup\n• Contributor login\n• Making payments\n• Dashboard features\n• Password recovery\n\nOr contact princeoscar008@gmail.com for direct support!";
+      }
+      
+      document.addEventListener('click', (e) => {
+        if (!botToggle.contains(e.target) && !botChat.contains(e.target)) {
+          botChat.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

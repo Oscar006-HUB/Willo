@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - Willo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #22c55e;
+      --primary-dark: #16a34a;
+      --secondary: #f0fdf4;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #94a3b8;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f1f5f9;
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      flex: 1;
+    }
+    
+    header {
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+    
+    .nav-links a.active {
+      color: var(--primary);
+      border-bottom: 2px solid var(--primary);
+    }
+    
+    .main-content {
+      padding: 2rem 0;
+      flex: 1;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .card h2 {
+      color: var(--primary-dark);
+      margin-bottom: 1.5rem;
+    }
+    
+    .mission-statement {
+      background: var(--secondary);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin: 1.5rem 0;
+      border-left: 4px solid var(--primary);
+    }
+    
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    
+    .feature-card {
+      background: var(--secondary);
+      padding: 1.5rem;
+      border-radius: 12px;
+      text-align: center;
+    }
+    
+    .feature-card i {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    
+    .feature-card h3 {
+      color: var(--primary-dark);
+      margin-bottom: 0.5rem;
+    }
+    
+    .monetization {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+      padding: 2.5rem;
+      margin: 3rem 0;
+    }
+    
+    .monetization h2 {
+      color: var(--primary-dark);
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    
+    .revenue-models {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .revenue-card {
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+    }
+    
+    .revenue-card h3 {
+      color: var(--dark);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .revenue-card ul {
+      list-style: none;
+    }
+    
+    .revenue-card ul li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .revenue-card ul li:last-child {
+      border-bottom: none;
+    }
+    
+    .revenue-card .amount {
+      font-weight: bold;
+      color: var(--primary-dark);
+    }
+    
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <nav class="navbar">
+        <a href="index.html" class="logo">Willo</a>
+        <div class="nav-links">
+          <a href="help.html">Help</a>
+          <a href="about.html" class="active">About</a>
+        </div>
+      </nav>
+    </header>
+    
+    <div class="main-content">
+      <div class="card">
+        <h2>About Willo</h2>
+        
+        <div class="mission-statement">
+          <h3>Our Mission</h3>
+          <p>Willo empowers church communities to track and manage contributions across all ministry groups with transparency and ease.</p>
+        </div>
+        
+        <h3>What We Do</h3>
+        <p>Willo is a contribution tracking system designed specifically for church ministries. We help you:</p>
+        <ul style="margin: 1rem 0 1.5rem 1.5rem; line-height: 1.6;">
+          <li>Track contributions for multiple ministry groups (Choir, Building Fund, Missions, etc.)</li>
+          <li>Monitor payment history and identify defaulted months</li>
+          <li>Generate annual summaries for contributors</li>
+          <li>Provide multiple payment options (Card, Mobile Money, Cash)</li>
+          <li>Send automated notifications and reminders</li>
+        </ul>
+        
+        <h3>Our Story</h3>
+        <p>Willo was created by church leaders who understood the challenges of managing contributions across multiple ministry groups. What started as a simple spreadsheet evolved into this comprehensive system to serve churches of all sizes.</p>
+        
+        <div class="features">
+          <div class="feature-card">
+            <i class="fas fa-users"></i>
+            <h3>Organization Management</h3>
+            <p>Register your ministry group and manage all contributors in one place</p>
+          </div>
+          <div class="feature-card">
+            <i class="fas fa-credit-card"></i>
+            <h3>Secure Payments</h3>
+            <p>Accept card payments with Stripe integration - safe and reliable</p>
+          </div>
+          <div class="feature-card">
+            <i class="fas fa-robot"></i>
+            <h3>AI Help Bot</h3>
+            <p>Get instant answers to common questions with our intelligent assistant</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="monetization">
+        <h2>How Willo Makes Money</h2>
+        <p>We believe in transparent, fair pricing that supports our mission while providing value to churches.</p>
+        
+        <div class="revenue-models">
+          <div class="revenue-card">
+            <h3><i class="fas fa-tag"></i> Subscription Plans</h3>
+            <ul>
+              <li>Starter Plan: <span class="amount">Free</span></li>
+              <li>Growth Plan: <span class="amount">₦2,500/month</span></li>
+              <li>Enterprise Plan: <span class="amount">₦7,500/month</span></li>
+            </ul>
+          </div>
+          
+          <div class="revenue-card">
+            <h3><i class="fas fa-percentage"></i> Transaction Fees</h3>
+            <ul>
+              <li>Card Payments: <span class="amount">3% platform fee</span></li>
+              <li>Mobile Money: <span class="amount">No fee</span></li>
+              <li>Bank Transfers: <span class="amount">No fee</span></li>
+            </ul>
+          </div>
+          
+          <div class="revenue-card">
+            <h3><i class="fas fa-hand-holding-usd"></i> Value Provided</h3>
+            <ul>
+              <li>Secure payment processing</li>
+              <li>Real-time contribution tracking</li>
+              <li>Automated reporting</li>
+              <li>24/7 support</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 2rem;">
+        <h3>Get Involved</h3>
+        <p>Want to bring Willo to your church?</p>
+        <a href="help.html" class="btn" style="display: inline-block; margin-top: 1rem; background: #22c55e; color: white; padding: 0.8rem 1.5rem; text-decoration: none; border-radius: 8px;">
+          <i class="fas fa-envelope"></i> Contact Us
+        </a>
+      </div>
+    </div>
+    
+    <footer>
+      <p>&copy; 2024 Willo Ministry. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Simple button styling for contact link
+    document.querySelector('.btn').addEventListener('mouseenter', function() {
+      this.style.background = '#16a34a';
+    });
+    
+    document.querySelector('.btn').addEventListener('mouseleave', function() {
+      this.style.background = '#22c55e';
+    });
+  </script>
+</body>
+</html>

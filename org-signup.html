@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organization Signup - Willo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #22c55e;
+      --primary-dark: #16a34a;
+      --secondary: #f0fdf4;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #94a3b8;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, var(--secondary) 0%, white 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    header {
+      padding: 1.5rem 0;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+    
+    .main-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 500px;
+    }
+    
+    .card h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--dark);
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .btn {
+      display: block;
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+    
+    .range-info {
+      background: var(--secondary);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 1.5rem 0;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <nav class="navbar">
+        <a href="index.html" class="logo">Willo</a>
+        <div class="nav-links">
+          <a href="help.html">Help</a>
+          <a href="about.html">About</a>
+        </div>
+      </nav>
+    </header>
+    
+    <div class="main-content">
+      <div class="card">
+        <h2>Organization Signup</h2>
+        <p style="text-align: center; margin-bottom: 1.5rem; color: var(--gray);">
+          Register your ministry group to manage contributions
+        </p>
+        
+        <form id="orgSignupForm">
+          <div class="form-group">
+            <label for="orgName">Organization Name</label>
+            <input type="text" id="orgName" class="form-control" placeholder="e.g., St. Mary's Choir" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="orgEmail">Organization Email</label>
+            <input type="email" id="orgEmail" class="form-control" placeholder="contact@organization.org" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="orgPhone">Organization Phone</label>
+            <input type="tel" id="orgPhone" class="form-control" placeholder="+233 XXX XXX XXX" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="contributionNumber">Contribution Phone Number</label>
+            <input type="tel" id="contributionNumber" class="form-control" placeholder="+233 XXX XXX XXX" required>
+            <div class="range-info">
+              <p><i class="fas fa-info-circle"></i> This number will receive all mobile money contributions</p>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="country">Country</label>
+            <select id="country" class="form-control" required>
+              <option value="">Select your country</option>
+              <optgroup label="West Africa">
+                <option value="GH" selected>Ghana</option>
+                <option value="NG">Nigeria</option>
+                <option value="CI">Côte d'Ivoire</option>
+                <option value="SN">Senegal</option>
+                <option value="TG">Togo</option>
+              </optgroup>
+              <optgroup label="East Africa">
+                <option value="KE">Kenya</option>
+                <option value="UG">Uganda</option>
+                <option value="TZ">Tanzania</option>
+                <option value="RW">Rwanda</option>
+              </optgroup>
+              <optgroup label="Southern Africa">
+                <option value="ZA">South Africa</option>
+                <option value="ZW">Zimbabwe</option>
+                <option value="MZ">Mozambique</option>
+                <option value="ZM">Zambia</option>
+              </optgroup>
+              <optgroup label="Other">
+                <option value="OTHER">Other African Country</option>
+              </optgroup>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="currency">Currency <span style="color: var(--gray); font-size: 0.9rem;">(Default: GHS)</span></label>
+            <select id="currency" class="form-control" required>
+              <option value="GHS" data-symbol="₵">Ghana Cedi (₵)</option>
+              <option value="NGN" data-symbol="₦">Nigerian Naira (₦)</option>
+              <option value="KES" data-symbol="KSh">Kenyan Shilling (KSh)</option>
+              <option value="UGX" data-symbol="USh">Ugandan Shilling (USh)</option>
+              <option value="ZAR" data-symbol="R">South African Rand (R)</option>
+              <option value="XOF" data-symbol="CFA">West African CFA (CFA)</option>
+              <option value="XAF" data-symbol="FCFA">Central African CFA (FCFA)</option>
+              <option value="USD" data-symbol="$">US Dollar ($)</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="contributorCount">Number of Contributors</label>
+            <select id="contributorCount" class="form-control" required>
+              <option value="">Select range</option>
+              <option value="10">1-10 contributors</option>
+              <option value="50">11-50 contributors</option>
+              <option value="100">51-100 contributors</option>
+              <option value="500">101-500 contributors</option>
+              <option value="1000">501+ contributors</option>
+            </select>
+          </div>
+          
+          <button type="submit" class="btn">Register Organization</button>
+        </form>
+        
+        <div id="signupAlert" style="margin-top: 1rem; padding: 1rem; border-radius: 8px; display: none;"></div>
+      </div>
+    </div>
+    
+    <footer>
+      <p>&copy; 2024 Willo Ministry. Organization contribution management.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Auto-update currency when country changes
+    document.getElementById('country').addEventListener('change', function() {
+      const country = this.value;
+      const currencySelect = document.getElementById('currency');
+      
+      // Map countries to default currencies
+      const countryCurrencyMap = {
+        'GH': 'GHS',
+        'NG': 'NGN',
+        'KE': 'KES',
+        'UG': 'UGX',
+        'TZ': 'TZS',
+        'RW': 'RWF',
+        'ZA': 'ZAR',
+        'ZW': 'ZWL',
+        'MZ': 'MZN',
+        'ZM': 'ZMW',
+        'CI': 'XOF',
+        'SN': 'XOF',
+        'TG': 'XOF'
+      };
+      
+      if (countryCurrencyMap[country]) {
+        currencySelect.value = countryCurrencyMap[country];
+      }
+    });
+    
+    document.getElementById('orgSignupForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = {
+        orgName: document.getElementById('orgName').value,
+        orgEmail: document.getElementById('orgEmail').value,
+        orgPhone: document.getElementById('orgPhone').value,
+        contributionNumber: document.getElementById('contributionNumber').value,
+        country: document.getElementById('country').value,
+        currency: document.getElementById('currency').value,
+        currencySymbol: document.querySelector(`#currency option[value="${document.getElementById('currency').value}"]`).dataset.symbol,
+        contributorCount: document.getElementById('contributorCount').value
+      };
+      
+      try {
+        const res = await fetch('http://localhost:5000/api/org/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+        
+        const data = await res.json();
+        
+        const alert = document.getElementById('signupAlert');
+        if (data.error) {
+          alert.textContent = data.error;
+          alert.style.backgroundColor = '#fee2e2';
+          alert.style.color = '#b91c1c';
+        } else {
+          alert.textContent = 'Registration successful! Check your email for organization credentials.';
+          alert.style.backgroundColor = '#dcfce7';
+          alert.style.color = '#166534';
+          document.getElementById('orgSignupForm').reset();
+        }
+        alert.style.display = 'block';
+      } catch (err) {
+        document.getElementById('signupAlert').textContent = 'Registration failed. Please try again.';
+        document.getElementById('signupAlert').style.display = 'block';
+        document.getElementById('signupAlert').style.backgroundColor = '#fee2e2';
+        document.getElementById('signupAlert').style.color = '#b91c1c';
+      }
+    });
+  </script>
+</body>
+</html>

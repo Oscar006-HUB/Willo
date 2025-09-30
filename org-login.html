@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organization Login - Willo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #22c55e;
+      --primary-dark: #16a34a;
+      --secondary: #f0fdf4;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #94a3b8;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, var(--secondary) 0%, white 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    header {
+      padding: 1.5rem 0;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .main-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 450px;
+    }
+    
+    .card h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--dark);
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .btn {
+      display: block;
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+    
+    .links {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    
+    .links a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .links a:hover {
+      text-decoration: underline;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 1.5rem 0;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="index.html" class="logo">Willo</a>
+    </header>
+    
+    <div class="main-content">
+      <div class="card">
+        <h2>Organization Login</h2>
+        <form id="orgLoginForm">
+          <div class="form-group">
+            <label for="orgEmail">Organization Email</label>
+            <input type="email" id="orgEmail" class="form-control" placeholder="contact@organization.org" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" class="form-control" required>
+          </div>
+          <button type="submit" class="btn">Login</button>
+        </form>
+        <div class="links">
+          <p>Don't have an account? <a href="org-signup.html">Register your organization</a></p>
+          <p><a href="help.html">Need help?</a></p>
+        </div>
+        <div id="loginAlert" style="margin-top: 1rem; padding: 1rem; border-radius: 8px; display: none;"></div>
+      </div>
+    </div>
+    
+    <footer>
+      <p>&copy; 2024 Willo Ministry. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <!-- Willo Help Bot (same as previous files) -->
+  <div id="willoBot" style="position: fixed; bottom: 20px; right: 20px; z-index: 10000;">
+    <button id="botToggle" style="background: #22c55e; color: white; width: 60px; height: 60px; border-radius: 50%; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.15); cursor: pointer; font-size: 24px; display: flex; align-items: center; justify-content: center; transition: transform 0.2s;">
+      <i class="fas fa-robot"></i>
+    </button>
+    
+    <div id="botChat" style="display: none; position: absolute; bottom: 80px; right: 0; width: 350px; background: white; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; flex-direction: column; height: 400px;">
+      <div style="background: #22c55e; color: white; padding: 15px; display: flex; align-items: center; justify-content: space-between;">
+        <div>
+          <strong>Willo Helper</strong>
+          <div style="font-size: 0.8rem; opacity: 0.9;">Ask me anything!</div>
+        </div>
+        <button id="closeBot" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div id="chatMessages" style="flex: 1; padding: 15px; overflow-y: auto; background: #f8fafc;">
+        <div class="bot-message" style="display: flex; margin-bottom: 15px;">
+          <div style="width: 32px; height: 32px; background: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin-right: 10px; flex-shrink: 0;">
+            <i class="fas fa-robot" style="font-size: 14px;"></i>
+          </div>
+          <div style="background: white; padding: 12px; border-radius: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            Hello! I'm Willo's helper bot. How can I assist you today?
+          </div>
+        </div>
+      </div>
+      
+      <div style="padding: 15px; border-top: 1px solid #e2e8f0; display: flex; gap: 10px;">
+        <input type="text" id="userInput" placeholder="Type your question..." style="flex: 1; padding: 10px 15px; border: 2px solid #e2e8f0; border-radius: 24px; outline: none;" />
+        <button id="sendBtn" style="background: #22c55e; color: white; width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .bot-message { display: flex; margin-bottom: 15px; }
+    .user-message { justify-content: flex-end; }
+    .user-message .message-bubble { background: #dcfce7; border-radius: 18px 0 18px 18px; }
+    .bot-message .message-bubble { background: white; border-radius: 0 18px 18px 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .typing-indicator { display: flex; padding: 12px; background: white; border-radius: 18px 0 18px 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-left: 42px; }
+    .typing-dot { width: 8px; height: 8px; background: #94a3b8; border-radius: 50%; margin: 0 3px; animation: typing 1.4s infinite; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typing { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
+  </style>
+
+  <script>
+    document.getElementById('orgLoginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      // Simulate login
+      const email = document.getElementById('orgEmail').value;
+      if (email === 'test@org.com') {
+        localStorage.setItem('willo_org_token', 'fake-token');
+        window.location.href = 'org-dashboard.html';
+      } else {
+        document.getElementById('loginAlert').textContent = 'Invalid credentials. Please try again.';
+        document.getElementById('loginAlert').style.display = 'block';
+        document.getElementById('loginAlert').style.backgroundColor = '#fee2e2';
+        document.getElementById('loginAlert').style.color = '#b91c1c';
+      }
+    });
+
+    // Bot script (same as previous files)
+    document.addEventListener('DOMContentLoaded', () => {
+      const botToggle = document.getElementById('botToggle');
+      const botChat = document.getElementById('botChat');
+      const closeBot = document.getElementById('closeBot');
+      const userInput = document.getElementById('userInput');
+      const sendBtn = document.getElementById('sendBtn');
+      const chatMessages = document.getElementById('chatMessages');
+      
+      botToggle.addEventListener('click', () => {
+        botChat.style.display = botChat.style.display === 'none' ? 'flex' : 'none';
+      });
+      
+      closeBot.addEventListener('click', () => {
+        botChat.style.display = 'none';
+      });
+      
+      sendBtn.addEventListener('click', sendMessage);
+      userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+      });
+      
+      function sendMessage() {
+        const message = userInput.value.trim();
+        if (!message) return;
+        
+        addMessage(message, 'user');
+        userInput.value = '';
+        showTypingIndicator();
+        
+        setTimeout(() => {
+          const response = getBotResponse(message);
+          hideTypingIndicator();
+          addMessage(response, 'bot');
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 1000);
+      }
+      
+      function addMessage(text, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `${sender}-message bot-message`;
+        
+        const bubble = document.createElement('div');
+        bubble.className = 'message-bubble';
+        bubble.textContent = text;
+        
+        if (sender === 'bot') {
+          messageDiv.innerHTML = `<div style="width: 32px; height: 32px; background: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin-right: 10px; flex-shrink: 0;"><i class="fas fa-robot" style="font-size: 14px;"></i></div>`;
+          messageDiv.appendChild(bubble);
+        } else {
+          messageDiv.appendChild(bubble);
+          messageDiv.innerHTML += `<div style="width: 32px; height: 32px; background: #94a3b8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin-left: 10px; flex-shrink: 0;"><i class="fas fa-user" style="font-size: 14px;"></i></div>`;
+        }
+        
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+      
+      function showTypingIndicator() {
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'typing-indicator';
+        typingDiv.id = 'typingIndicator';
+        typingDiv.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+        chatMessages.appendChild(typingDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+      
+      function hideTypingIndicator() {
+        const typingIndicator = document.getElementById('typingIndicator');
+        if (typingIndicator) typingIndicator.remove();
+      }
+      
+      function getBotResponse(message) {
+        const msg = message.toLowerCase();
+        if (msg.includes('organization') || msg.includes('org') || msg.includes('signup')) {
+          return "Organizations can sign up at willo.org/org-signup.html. You'll need to provide your organization details, contribution phone number, and number of contributors. After signup, you'll receive bulk credentials to distribute to your members.";
+        }
+        if (msg.includes('contributor') || msg.includes('member') || msg.includes('user')) {
+          return "As a contributor, you'll receive a unique ID and password from your organization. Use these to log in at willo.org/contributor-login.html and track your contributions.";
+        }
+        if (msg.includes('payment') || msg.includes('contribution') || msg.includes('pay') || msg.includes('mobile money')) {
+          return "To make payments, send money via Mobile Money to your organization's contribution number. Always use your Contributor ID as the reference. Your payments will automatically appear in your dashboard.";
+        }
+        if (msg.includes('dashboard') || msg.includes('track') || msg.includes('history')) {
+          return "Your dashboard shows all your contribution history, payment status (paid/missed), and your organization's contact details. Log in to see your personalized dashboard.";
+        }
+        if (msg.includes('password') || msg.includes('reset') || msg.includes('forgot')) {
+          return "If you forgot your password, contact your organization administrator. They can reset your credentials from their organization dashboard.";
+        }
+        if (msg.includes('help') || msg.includes('support') || msg.includes('contact')) {
+          return "For additional help, visit our Help page or contact support at princeoscar008@gmail.com. Your organization administrator can also assist you.";
+        }
+        if (msg.includes('login') || msg.includes('signin')) {
+          return "Contributors: Use your organization-provided ID and password at willo.org/contributor-login.html\n\nOrganizations: Log in at willo.org/org-login.html with your organization credentials.";
+        }
+        if (msg.includes('register') || msg.includes('signup')) {
+          return "Only organizations can register on Willo. Individual contributors receive credentials from their organization. Organizations should visit willo.org/org-signup.html to get started.";
+        }
+        if (msg.includes('thank') || msg.includes('great') || msg.includes('good')) {
+          return "You're welcome! I'm here to help anytime. God bless your contributions!";
+        }
+        if (msg.includes('hello') || msg.includes('hi') || msg.includes('hey')) {
+          return "Hello! How can I help you with Willo today?";
+        }
+        if (msg.includes('who are you') || msg.includes('what are you')) {
+          return "I'm Willo's AI helper bot! I can answer questions about organization signup, contributor login, payments, and dashboard features.";
+        }
+        return "I understand you're asking about '" + message + "'. For the best assistance, please ask about:\n\n• Organization signup\n• Contributor login\n• Making payments\n• Dashboard features\n• Password recovery\n\nOr contact princeoscar008@gmail.com for direct support!";
+      }
+      
+      document.addEventListener('click', (e) => {
+        if (!botToggle.contains(e.target) && !botChat.contains(e.target)) {
+          botChat.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
